@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Restricted Content'
+vid: authenticated_content
+description: 'Restrict access to specific content'
+hierarchy: 0
+weight: 0

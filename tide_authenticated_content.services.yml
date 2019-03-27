@@ -1,0 +1,20 @@
+services:
+  tide_authenticated_content.authentication.jwt:
+    class: Drupal\tide_authenticated_content\Auth\AuthProvider
+    arguments: [ '@entity_type.manager', '@jwt.transcoder', '@event_dispatcher' ]
+    tags:
+      - { name: authentication_provider, provider_id: 'tide_protect_auth', global: TRUE, priority: 1 }
+  tide_authenticated_content.authenticated_content_route_subscriber:
+    class: Drupal\tide_authenticated_content\Routing\AuthenticatedContentRouteSubscriber
+    arguments: [ '@config.factory' ]
+    tags:
+      - { name: event_subscriber }
+  tide_authenticated_content.access_block_checker:
+    class: Drupal\tide_authenticated_content\Access\AuthenticatedContentUserRegBlockAccessCheck
+    tags:
+      - { name: access_check }
+  tide_authenticated_content.access_jsonapi_checker:
+    class: Drupal\tide_authenticated_content\Access\AuthenticatedContentJsonApiRouteAccessCheck
+    arguments: [ '@entity_type.manager', '@path.current', '@config.factory', '@request_stack' ]
+    tags:
+      - { name: access_check }

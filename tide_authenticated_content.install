@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Tide Authenticated Content module install file.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function tide_authenticated_content_install() {
+
+  if (!\Drupal::service('config.installer')->isSyncing()) {
+
+    $module_installer = \Drupal::service('module_installer');
+    $module_installer->install([
+      'key',
+      'jwt',
+      'jwt_auth_consumer',
+      'jwt_auth_issuer',
+      'permissions_by_term',
+      'rest',
+    ]);
+
+    // Create taxonomy.
+    module_load_include('inc', 'tide_core', 'includes/helpers');
+    $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
+    _tide_import_single_config('taxonomy.vocabulary.authenticated_content', $config_location);
+
+    // Create field for Landing page.
+    _tide_import_single_config('field.storage.node.field_authenticated_content', $config_location);
+    _tide_import_single_config('field.field.node.landing_page.field_authenticated_content', $config_location);
+
+    // Allow editors and approvers access to create Authenticated Content terms.
+    user_role_grant_permissions('editor', ['create terms in authenticated_content']);
+    user_role_grant_permissions("approver", ['create terms in authenticated_content']);
+  }
+}

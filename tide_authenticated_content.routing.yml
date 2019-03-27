@@ -1,0 +1,54 @@
+
+tide_authenticated_content.user.login:
+  path: '/api/v1/user/login'
+  defaults:
+    _controller: '\Drupal\tide_authenticated_content\Controller\AuthenticatedContentController::loginAction'
+    _title: 'Login'
+  methods: [POST,GET]
+  requirements:
+    _permission: 'access content'
+
+tide_authenticated_content.user.logout:
+  path: '/api/v1/user/logout'
+  defaults:
+    _controller: '\Drupal\tide_authenticated_content\Controller\AuthenticatedContentController::logoutAction'
+    _title: 'Logout'
+  methods: [POST,GET]
+  requirements:
+    _permission: 'access content'
+
+tide_authenticated_content.user.register:
+  path: '/api/v1/user/register'
+  defaults:
+    _controller: '\Drupal\tide_authenticated_content\Controller\AuthenticatedContentController::registerAction'
+    _title: 'Register'
+  methods: [POST]
+  requirements:
+    _permission: 'access content'
+
+tide_authenticated_content.user.update:
+  path: '/api/v1/user/update'
+  defaults:
+    _controller: '\Drupal\tide_authenticated_content\Controller\AuthenticatedContentController::updateAction'
+    _title: 'Update'
+  methods: [POST]
+  requirements:
+    _permission: 'access content'
+
+tide_authenticated_content.user.request_reset:
+  path: '/api/v1/user/request_reset'
+  defaults:
+    _controller: '\Drupal\tide_authenticated_content\Controller\AuthenticatedContentController::requestResetAction'
+    _title: 'Request Reset'
+  methods: [POST]
+  requirements:
+    _permission: 'access content'
+
+tide_authenticated_content.user.reset:
+  path: '/api/v1/user/reset_password'
+  defaults:
+    _controller: '\Drupal\tide_authenticated_content\Controller\AuthenticatedContentController::resetAction'
+    _title: 'Reset Password'
+  methods: [POST]
+  requirements:
+    _permission: 'access content'

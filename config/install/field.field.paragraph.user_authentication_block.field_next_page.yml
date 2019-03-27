@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_next_page
+    - node.type.landing_page
+    - paragraphs.paragraphs_type.user_authentication_block
+id: paragraph.user_authentication_block.field_next_page
+field_name: field_next_page
+entity_type: paragraph
+bundle: user_authentication_block
+label: 'Next Page'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      landing_page: landing_page
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,33 @@
+{
+    "name": "dpc-sdp/tide_authenticated_content",
+    "description": "Allows content administrators to protect pages and sections with user authentication",
+    "type": "drupal-module",
+    "license": "GPL-2.0+",
+    "version": "0.0.1",
+    "require": {
+        "dpc-sdp/tide_core": "@dev",
+        "dpc-sdp/tide_media": "@dev",
+        "drupal/jwt": "^1.0@alpha",
+        "drupal/permissions_by_term": "v2.6"
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    },
+    "minimum-stability": "alpha",
+    "prefer-stable": true,
+    "extra": {
+        "patches": {
+            "drupal/permissions_by_term": {
+                "Jsonapi integration - https://www.drupal.org/project/permissions_by_term/issues/3032557": "https://www.drupal.org/files/issues/2019-02-13/permissions_by_term-jsonapi_integration-3032557-2-8.26.patch"
+            },
+            "drupal/jwt": {
+                "Adding configuration for the JWT timeout - https://www.drupal.org/project/jwt/issues/2782571": "https://www.drupal.org/files/issues/2019-02-14/jwt-make_expiration_time_configurable-2782571-5.patch"
+            }
+
+        }
+    }
+}
+

@@ -1,0 +1,15 @@
+name: Tide Authenticated Content
+type: module
+description: 'restrict access to specific content from that the general public'
+package: Tide
+core: 8.x
+dependencies:
+  - dpc-sdp:tide_core
+  - drupal:jwt
+  - drupal:permissions_by_term
+config_devel:
+  install:
+    - field.field.node.landing_page.field_authenticated_content.yml
+    - field.storage.node.field_authenticated_content.yml
+    - taxonomy.vocabulary.authenticated_content.yml
+  optional:

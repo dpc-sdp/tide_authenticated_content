@@ -1,0 +1,151 @@
+<?php
+
+/**
+ * @file
+ * Tide Authenticated Content module functionality.
+ */
+
+use Drupal\taxonomy\Entity\Term;
+use Drupal\tide_site\TideSiteHelper;
+use Drupal\user\Entity\User;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Access\AccessResult;
+
+/**
+ * Implements hook_mail_alter().
+ *
+ * Using mail_alter to handle all reset links (including when status_activated
+ * is sent after account is activated).
+ */
+function tide_authenticated_content_mail_alter(&$message) {
+  $moduleHandler = \Drupal::service('module_handler');
+  if ($moduleHandler->moduleExists('tide_site')) {
+    /** @var \Symfony\Component\DependencyInjection\ContainerInterface $kernel */
+    $container = \Drupal::getContainer();
+
+    /** @var \Drupal\Core\Entity\EntityTypeManager $em */
+    $em = $container->get("entity_type.manager");
+
+    /** @var \Drupal\Core\Entity\EntityRepository $er */
+    $er = $container->get("entity.repository");
+    $helper = new TideSiteHelper($em, $er);
+
+    /** @var \Drupal\taxonomy\TermInterface $site */
+    $site = NULL;
+
+    foreach ($message['body'] as $i => $b) {
+      if (preg_match(
+        "#http(s|)://[^/]+/user/reset/([0-9]+)/([0-9]+)/([^\s\n]+)#",
+        $b,
+        $matches
+      )) {
+
+        /** @var \Drupal\user\Entity\User $u */
+        try {
+          $u = $em->getStorage('user')->load($matches[2]);
+        }
+        catch (\Exception $e) {
+          \Drupal::logger("default")
+            ->warning("Failed to load user: " . $e->getMessage());
+          return;
+        }
+
+        if ($u !== NULL) {
+          // Set in dpc-sdp/tide_authenticated_content/config/install/tide_authenticated_content.module.yml.
+          $config = \Drupal::config('tide_authenticated_content.module');
+          $backendRoles = $config->get("backend_user_roles");
+          $roles = $u->getRoles();
+          // Find users with roles in the list of configured backend roles.
+          if (!empty($roles) && !empty(array_intersect($backendRoles,
+              $roles))) {
+            // Current user is a backend user don't alter email.
+            return;
+          }
+          else {
+            $user = User::load($u->id());
+            if ($u->hasField('field_site')) {
+              $siteId = $user->get("field_site")->getValue()[0]["target_id"];
+            }
+            else {
+              $siteId = $config->get("default_site_id");
+            }
+            if (!$siteId) {
+              return;
+            }
+            $site = Term::load($siteId);
+          }
+        }
+      }
+    }
+
+    // If user has not site we cannot find the domain so don't rewrite.
+    if ($site == NULL) {
+      return;
+    }
+
+    $base = $helper->getSiteProductionDomain($site);
+  }
+
+  if (!empty($base)) {
+    foreach ($message['body'] as $i => $b) {
+      $message['body'][$i] = preg_replace(
+        "#http(s|)://[^/]+/user/reset/([0-9]+)/([0-9]+)/([^\s\n]+)#",
+        "https://$base" . '/user/reset/$2/$3/$4',
+        $b
+      );
+      $message['body'][$i] = preg_replace(
+        "#http(s|)://[^/]+/user([\s\n]+)#",
+        "https://$base" . '/login$2',
+        $message['body'][$i]
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function tide_authenticated_content_user_access(
+  EntityInterface $user,
+  $operation,
+  AccountInterface $account
+) {
+  $tide_config = \Drupal::config('tide_authenticated_content.module');
+  $protectJsonapiUserRoute = $tide_config->get("protect_jsonapi_user_route");
+  $currentPath = \Drupal::service('path.current')->getPath();
+  if ($protectJsonapiUserRoute) {
+    if (strpos($currentPath, '/api/v1/user/user') === 0) {
+      if ($user->id() !== 0 && $user->id() == $account->id()) {
+        return AccessResult::neutral();
+      }
+      return AccessResult::forbidden();
+    }
+  }
+
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function tide_authenticated_content_profile_access(
+  EntityInterface $profile,
+  $operation,
+  AccountInterface $account
+) {
+  $tide_config = \Drupal::config('tide_authenticated_content.module');
+  $protectJsonapiUserRoute = $tide_config->get("protect_jsonapi_user_route");
+  $currentPath = \Drupal::service('path.current')->getPath();
+  if ($protectJsonapiUserRoute) {
+    if (strpos($currentPath, '/api/v1/profile') === 0) {
+      $uid = $profile->get('uid')->getValue()[0]['target_id'];
+      if ($uid !== 0 && $uid == $account->id()) {
+        return AccessResult::neutral();
+      }
+      return AccessResult::forbidden();
+    }
+  }
+
+  return AccessResult::neutral();
+}

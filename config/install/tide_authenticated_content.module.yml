@@ -1,0 +1,10 @@
+backend_user_roles:
+  - "administrator"
+  - "editor"
+  - "approver"
+auto_apply_user_roles: null
+default_site_id: 1
+block_be_user_registration: 1
+protect_jsonapi_user_route: 1
+jsonapi_user_route:
+  - "/api/v1/user/user"

@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_authenticated_content
+    - node.type.landing_page
+    - taxonomy.vocabulary.authenticated_content
+id: node.landing_page.field_authenticated_content
+field_name: field_authenticated_content
+entity_type: node
+bundle: landing_page
+label: 'Restricted Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      authenticated_content: authenticated_content
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
