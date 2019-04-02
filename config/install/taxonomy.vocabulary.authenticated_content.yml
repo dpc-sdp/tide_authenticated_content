@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: 'Restricted Content'
+name: 'Authenticated Content'
 vid: authenticated_content
-description: 'Restrict access to specific content'
+description: 'Allow access to specified content to authenticated users only'
 hierarchy: 0
 weight: 0
