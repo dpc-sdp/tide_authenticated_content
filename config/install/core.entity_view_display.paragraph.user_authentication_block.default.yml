@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.field.paragraph.user_authentication_block.field_next_page
     - paragraphs.paragraphs_type.user_authentication_block
+  module:
+    - link
 id: paragraph.user_authentication_block.default
 targetEntityType: paragraph
 bundle: user_authentication_block
@@ -13,8 +15,12 @@ content:
     weight: 0
     label: above
     settings:
-      link: true
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    type: entity_reference_label
+    type: link
     region: content
 hidden: {  }
