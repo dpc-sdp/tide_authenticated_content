@@ -5,6 +5,7 @@
  * Tide Authenticated Content module functionality.
  */
 
+use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\tide_site\TideSiteHelper;
 use Drupal\user\Entity\User;
@@ -148,4 +149,63 @@ function tide_authenticated_content_profile_access(
   }
 
   return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function tide_authenticated_content_node_access_records(NodeInterface $node) {
+  if (!$node->isPublished()) {
+    // No module implements this hook for unpublished nodes, so we do.
+    $grants[] = [
+      'realm' => 'tide_authenticated_content',
+      'gid' => $node->id(),
+      'grant_view' => 1,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'nid' => $node->id(),
+    ];
+
+    return $grants;
+  }
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function tide_authenticated_content_node_grants(AccountInterface $account, $op) {
+  if ($op == 'view') {
+    $grants = [];
+    $query = \Drupal::database()->select('node_access', 'na')
+      ->fields('na', ['gid'])
+      ->condition('na.realm', 'tide_authenticated_content');
+
+    $gids = $query->execute()->fetchCol();
+
+    foreach ($gids as $gid) {
+      $grants['tide_authenticated_content'][] = $gid;
+    }
+
+    return $grants;
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function tide_authenticated_content_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  if (!$node->isPublished() && $op == 'view') {
+    $content_moderation_enabled = \Drupal::moduleHandler()->moduleExists('content_moderation');
+    $workbench_moderation_enabled = \Drupal::moduleHandler()->moduleExists('workbench_moderation');
+    if ($content_moderation_enabled || $workbench_moderation_enabled) {
+      $access_result = AccessResult::allowedIfHasPermission($account, 'view any unpublished content');
+      if ($access_result->isForbidden()) {
+        $owner_access = AccessResult::allowedIfHasPermission($account, 'view own unpublished content');
+        $owner_access = $owner_access->andIf(AccessResult::allowedIf($node->getOwnerId() == $account->id() || $node->getRevisionUserId() == $account->id()));
+        $access_result = $access_result->orIf($owner_access);
+      }
+      return $access_result->addCacheableDependency($node);
+    }
+  }
+  return AccessResult::neutral()->addCacheableDependency($node);
 }

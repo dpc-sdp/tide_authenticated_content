@@ -9,9 +9,7 @@
  * Implements hook_install().
  */
 function tide_authenticated_content_install() {
-
   if (!\Drupal::service('config.installer')->isSyncing()) {
-
     $module_installer = \Drupal::service('module_installer');
     $module_installer->install([
       'key',
@@ -35,4 +33,13 @@ function tide_authenticated_content_install() {
     user_role_grant_permissions('editor', ['create terms in authenticated_content']);
     user_role_grant_permissions("approver", ['create terms in authenticated_content']);
   }
+
+  tide_authenticated_content_update_8001();
+}
+
+/**
+ * Rebuild node_access table.
+ */
+function tide_authenticated_content_update_8001() {
+  node_access_rebuild(TRUE);
 }
