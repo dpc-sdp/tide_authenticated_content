@@ -41,12 +41,12 @@ function tide_authenticated_content_install() {
  * Rebuild node_access table.
  */
 function tide_authenticated_content_update_8001() {
-  node_access_rebuild(TRUE);
+  node_access_rebuild();
 }
 
 /**
  * Rebuild node_access table.
  */
 function tide_authenticated_content_update_8002() {
-  node_access_rebuild(TRUE);
+  node_access_rebuild();
 }
