@@ -2,6 +2,10 @@ backend_user_roles:
   - "administrator"
   - "editor"
   - "approver"
+  - "grant_author"
+  - "event_author"
+  - "site_admin"
+  - "previewer"
 auto_apply_user_roles: null
 default_site_id: 1
 block_be_user_registration: 1
