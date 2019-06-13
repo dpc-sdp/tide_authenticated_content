@@ -1,0 +1,10 @@
+/**
+ * @file
+ * Theme styles for the tide_authenticated_content preview links.
+ */
+.node-revision-preview-links {
+  border: 1px dashed #bbb;
+  margin: 2em 0;
+  background: #fff;
+  padding-left: 1em;
+}

@@ -5,6 +5,8 @@ package: Tide
 core: 8.x
 dependencies:
   - dpc-sdp:tide_core
+  - dpc-sdp:tide_site
+  - drupal:content_moderation
   - drupal:jwt
   - drupal:permissions_by_term
 config_devel:
