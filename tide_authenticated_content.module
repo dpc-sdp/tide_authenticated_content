@@ -271,7 +271,7 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
   /** @var \Drupal\tide_site\TideSiteHelper $site_helper */
   $site_helper = \Drupal::service('tide_site.helper');
   // Generate the preview URLs on all sites.
-  $sites = $site_helper->getEntitySites($entity);
+  $sites = $site_helper->getEntitySites($entity, TRUE);
   if (!empty($sites['ids'])) {
     foreach ($sites['ids'] as $site_id) {
       $site = $site_helper->getSiteById($site_id);
@@ -295,7 +295,7 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
           'url' => Url::fromUri($url, $url_options),
         ];
 
-        if ($section) {
+        if ($section && $section->id() != $site_id) {
           $preview_urls[$site_id]['name'] .= ' - ' . $section->getName();
         }
       }
@@ -324,7 +324,7 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
       'url' => Url::fromUri($url, $url_options),
     ];
 
-    if ($primary_site_section) {
+    if ($primary_site_section && $primary_site_section->id() != $primary_site->id()) {
       $primary_preview_url['name'] .= ' - ' . $primary_site_section->getName();
     }
 
@@ -345,7 +345,9 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
       ],
     ];
     foreach ($preview_urls as $url_data) {
-      $build['preview_links']['#items'][] = Link::fromTextAndUrl($url_data['name'], $url_data['url'])->toRenderable();
+      $build['preview_links']['#items'][] = [
+        '#markup' => $url_data['name'] . ': ' . Link::fromTextAndUrl($url_data['url']->toString(), $url_data['url'])->toString(),
+      ];
     }
   }
 }
