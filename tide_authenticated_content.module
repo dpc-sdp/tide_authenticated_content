@@ -337,7 +337,7 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
     $build['preview_links'] = [
       '#theme' => 'item_list',
       '#list_type' => 'ul',
-      '#title' => t('Click the links below to preview this revision on frontend sites'),
+      '#title' => t('Click the links below to preview this revision on frontend sites (Caching may take up to 5 minutes)'),
       '#items' => [],
       '#wrapper_attributes' => ['class' => 'node-revision-preview-links'],
       '#attached' => [
