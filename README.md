@@ -1,7 +1,7 @@
 # tide_authenticated_content
 Authenticated Content feature for Tide distribution.
 
-[![CircleCI](https://circleci.com/gh/dpc-sdp/tide_authenticated_content.svg?style=svg&circle-token=07815b591041208da25807121839caf16974849b)](https://circleci.com/gh/dpc-sdp/tide_alert)
+[![CircleCI](https://circleci.com/gh/dpc-sdp/tide_authenticated_content.svg?style=svg&circle-token=07815b591041208da25807121839caf16974849b)](https://circleci.com/gh/dpc-sdp/tide_authenticated_content)
 
 * Exposes New Custom API Endpoints for register, login, reset and forgot
 password.
