@@ -6,7 +6,7 @@
     "require": {
         "dpc-sdp/tide_core": "dev-feature/SDPA-2794_migrate_sdp-dpc_modules as 1.5.2",
         "dpc-sdp/tide_event": "dev-feature/SDPA-2794_migrate_sdp-dpc_modules",
-        "dpc-sdp/tide_landing_page": "^1.1.11",
+        "dpc-sdp/tide_landing_page": "dev-feature/SDPA-2794_migrate_sdp-dpc_modules",
         "dpc-sdp/tide_media": "^1.2.6",
         "dpc-sdp/tide_site": "^1.1.14",
         "drupal/jsonapi_extras": "^3.8",
