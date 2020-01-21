@@ -5,8 +5,12 @@ package: Tide
 core: 8.x
 dependencies:
   - dpc-sdp:tide_core
+  - dpc-sdp:tide_event
   - dpc-sdp:tide_site
+  - dpc-sdp:tide_landing_page
   - drupal:content_moderation
+  - drupal:jsonapi
+  - drupal:jsonapi_extras
   - drupal:jwt
   - drupal:permissions_by_term
 config_devel:

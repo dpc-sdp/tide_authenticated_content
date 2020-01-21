@@ -2,13 +2,16 @@
     "name": "dpc-sdp/tide_authenticated_content",
     "description": "Allows content administrators to protect pages and sections with user authentication",
     "type": "drupal-module",
-    "license": "GPL-2.0+",
-    "version": "0.0.1",
+    "license": "GPL-2.0-or-later",
     "require": {
-        "dpc-sdp/tide_core": "@dev",
-        "dpc-sdp/tide_media": "@dev",
+        "dpc-sdp/tide_core": "^1.5.4",
+        "dpc-sdp/tide_event": "^1.3.1",
+        "dpc-sdp/tide_landing_page": "^1.2.1",
+        "dpc-sdp/tide_media": "^1.5.1",
+        "dpc-sdp/tide_site": "^1.1.14",
+        "drupal/jsonapi_extras": "^3.8",
         "drupal/jwt": "1.0-alpha6",
-        "drupal/permissions_by_term": "v2.6"
+        "drupal/permissions_by_term": "v2.12"
     },
     "repositories": {
         "drupal": {

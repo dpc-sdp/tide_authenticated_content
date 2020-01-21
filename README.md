@@ -1,4 +1,7 @@
-# Authenticated Content Module
+# tide_authenticated_content
+Authenticated Content feature for Tide distribution.
+
+[![CircleCI](https://circleci.com/gh/dpc-sdp/tide_authenticated_content.svg?style=svg&circle-token=07815b591041208da25807121839caf16974849b)](https://circleci.com/gh/dpc-sdp/tide_authenticated_content)
 
 * Exposes New Custom API Endpoints for register, login, reset and forgot
 password.
@@ -106,7 +109,7 @@ protect, eg `/api/v1/user/user` route will be protected from external access.
 /node/add/landing_page
  - Title: ...
  - Protect Content: < name of term above >
- 
+
 Publish Page
 
 
@@ -118,7 +121,7 @@ Publish Page
  - Body
    - Add **Authenticated Content**
    - Set Next Page: < Authenticated Content Page Title >
-   
+
 Publish Page
 
 # Usage (API Authentication)
@@ -134,24 +137,24 @@ POST: /api/v1/user/register
 }
 ```
 
-**Success status 200** 
+**Success status 200**
 ```json
 {
     "message": "User account requested"
 }
 ```
 
-**Failed status 400** 
+**Failed status 400**
 ```json
 {
     "message": "User Registration Failed"
 } 
 ```
 
-**Error status 500** 
+**Error status 500**
 HTML/Text Error
 
-## Login Request 
+## Login Request
 
 POST /api/v1/user/login?_format=json
 ```json
@@ -246,5 +249,5 @@ POST: /api/v1/user/reset_password
 - TODO: Replace hard-corded alpha.vic.gov.au domain with users site
 - TODO: Only replace url for frontend users
 - TODO: Replace backend login link
-(http://content-vicgovau.docker.amazee.io/user) with the frontend-link the user 
+(http://content-vicgovau.docker.amazee.io/user) with the frontend-link the user
     registered on (eg a custom landing page)
