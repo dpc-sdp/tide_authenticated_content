@@ -289,10 +289,10 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
         }
 
         $site_url = $site_helper->getSiteBaseUrl($site);
-        $url = $site_url . '/preview/' . $content_type . '/' . $entity->uuid() . '/' . ($is_latest_revision ? 'latest' : $revision_id);
+        $url = !empty($site_url) ? ($site_url . '/preview/' . $content_type . '/' . $entity->uuid() . '/' . ($is_latest_revision ? 'latest' : $revision_id)) : '';
         $preview_urls[$site_id] = [
-          'name' => $site->getName(),
-          'url' => Url::fromUri($url, $url_options),
+          'name' => !empty($site->getName()) ? $site->getName() : '',
+          'url' => (!empty($url) && !empty($url_options)) ? Url::fromUri($url, $url_options) : '',
         ];
 
         if ($section && $section->id() != $site_id) {
@@ -318,10 +318,10 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
     }
 
     $primary_site_url = $site_helper->getSiteBaseUrl($primary_site);
-    $url = $primary_site_url . '/preview/' . $content_type . '/' . $entity->uuid() . '/' . ($is_latest_revision ? 'latest' : $revision_id);
+    $url = !empty($primary_site_url) ? ($primary_site_url . '/preview/' . $content_type . '/' . $entity->uuid() . '/' . ($is_latest_revision ? 'latest' : $revision_id)) : '';
     $primary_preview_url = [
-      'name' => $primary_site->getName(),
-      'url' => Url::fromUri($url, $url_options),
+      'name' => !empty($primary_site->getName()) ? $primary_site->getName() : '',
+      'url' => (!empty($url) && !empty($url_options)) ? Url::fromUri($url, $url_options) : '',
     ];
 
     if ($primary_site_section && $primary_site_section->id() != $primary_site->id()) {
@@ -345,9 +345,11 @@ function tide_authenticated_content_entity_view_alter(array &$build, EntityInter
       ],
     ];
     foreach ($preview_urls as $url_data) {
-      $build['preview_links']['#items'][] = [
-        '#markup' => $url_data['name'] . ': ' . Link::fromTextAndUrl($url_data['url']->toString(), $url_data['url'])->toString(),
-      ];
+      if (!empty($url_data['url'])) {
+        $build['preview_links']['#items'][] = [
+          '#markup' => $url_data['name'] . ': ' . Link::fromTextAndUrl($url_data['url']->toString(), $url_data['url'])->toString(),
+        ];
+      }
     }
   }
 }
