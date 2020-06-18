@@ -4,6 +4,11 @@ services:
     arguments: [ '@jwt.transcoder', '@event_dispatcher' ]
     tags:
       - { name: authentication_provider, provider_id: 'tide_protect_auth', global: TRUE, priority: 1 }
+  tide_authenticated_content.page_cache_request_policy.disallow_jwt_auth_requests:
+    class: Drupal\tide_authenticated_content\PageCache\TideDisallowJwtAuthRequests
+    public: false
+    tags:
+      - { name: page_cache_request_policy }
   tide_authenticated_content.authenticated_content_route_subscriber:
     class: Drupal\tide_authenticated_content\Routing\AuthenticatedContentRouteSubscriber
     arguments: [ '@config.factory' ]
