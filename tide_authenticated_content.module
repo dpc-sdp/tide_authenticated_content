@@ -366,15 +366,18 @@ function tide_authenticated_content_form_user_login_form_alter(&$form, FormState
  * User Roles can be blocked from logging in to Drupal.
  */
 function _tide_authenticated_content_user_role_validation($form, FormStateInterface $form_state) {
-  $result = \Drupal::service('user.auth')
-    ->authenticate($form_state->getValue('name'), $form_state->getValue('pass'));
-  if ($result) {
-    $tide_config = \Drupal::config('tide_authenticated_content.module');
-    $protectJsonapiUserRoute = $tide_config->get("protect_jsonapi_user_route");
-    if ($protectJsonapiUserRoute) {
-      if (empty(array_intersect($tide_config->get('backend_user_roles'), User::load($result)
-        ->getRoles()))) {
-        $form_state->setError($form, t("%username user doesn't have permission to login.", ['%username' => $form_state->getValue('name')]));
+  // Only validating when username and password are both not empty.
+  if (!empty($form_state->getValue('name')) && strlen($form_state->getValue('pass')) > 0) {
+    // Try to search the account that associated with the 'name'.
+    $account_search = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['name' => $form_state->getValue('name')]);
+    // The authentication process begins.
+    if ($account = reset($account_search)) {
+      $tide_config = \Drupal::config('tide_authenticated_content.module');
+      $protectJsonapiUserRoute = $tide_config->get("protect_jsonapi_user_route");
+      if ($protectJsonapiUserRoute) {
+        if (empty(array_intersect($tide_config->get('backend_user_roles'), $account->getRoles()))) {
+          $form_state->setError($form, t("%username user doesn't have permission to login.", ['%username' => $form_state->getValue('name')]));
+        }
       }
     }
   }
