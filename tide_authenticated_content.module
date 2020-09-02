@@ -5,10 +5,6 @@
  * Tide Authenticated Content module functionality.
  */
 
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\tide_site\TideSiteHelper;
@@ -67,25 +63,24 @@ function tide_authenticated_content_mail_alter(&$message) {
             // Current user is a backend user don't alter email.
             return;
           }
-          else {
-            $user = User::load($u->id());
-            if ($u->hasField('field_site')) {
-              $siteId = $user->get("field_site")->getValue()[0]["target_id"];
-            }
-            else {
-              $siteId = $config->get("default_site_id");
-            }
-            if (!$siteId) {
-              return;
-            }
-            $site = Term::load($siteId);
+
+          $user = User::load($u->id());
+          if ($u->hasField('field_site')) {
+            $siteId = $user->get("field_site")->getValue()[0]["target_id"];
           }
+          else {
+            $siteId = $config->get("default_site_id");
+          }
+          if (!$siteId) {
+            return;
+          }
+          $site = Term::load($siteId);
         }
       }
     }
 
     // If user has not site we cannot find the domain so don't rewrite.
-    if ($site == NULL) {
+    if ($site === NULL) {
       return;
     }
 
@@ -121,7 +116,8 @@ function tide_authenticated_content_user_access(
   $currentPath = \Drupal::service('path.current')->getPath();
   if ($protectJsonapiUserRoute) {
     if (strpos($currentPath, '/api/v1/user/user') === 0) {
-      if ($user->id() !== 0 && $user->id() == $account->id()) {
+      $uid = $user->id();
+      if ($uid !== 0 && $uid === $account->id()) {
         return AccessResult::neutral();
       }
       return AccessResult::forbidden();
@@ -175,6 +171,7 @@ function tide_authenticated_content_node_access_records(NodeInterface $node) {
       return $grants;
     }
   }
+  return [];
 }
 
 /**
@@ -183,7 +180,7 @@ function tide_authenticated_content_node_access_records(NodeInterface $node) {
 function tide_authenticated_content_node_grants(AccountInterface $account, $op) {
   // Only run if the module permission by terms is enabled.
   if (\Drupal::moduleHandler()->moduleExists('permissions_by_term')) {
-    if ($op == 'view') {
+    if ($op === 'view') {
       $view_unpublished_content_roles = array_keys(user_roles(TRUE, 'view any unpublished content'));
       $account_roles = $account->getRoles();
       if (!empty(array_intersect($account_roles, $view_unpublished_content_roles))) {
@@ -193,6 +190,7 @@ function tide_authenticated_content_node_grants(AccountInterface $account, $op) 
       }
     }
   }
+  return [];
 }
 
 /**
@@ -201,155 +199,12 @@ function tide_authenticated_content_node_grants(AccountInterface $account, $op) 
 function tide_authenticated_content_node_access(NodeInterface $node, $op, AccountInterface $account) {
   // Only run if the module permission by terms is enabled.
   if (\Drupal::moduleHandler()->moduleExists('permissions_by_term')) {
-    if (!$node->isPublished() && $op == 'view') {
+    if (!$node->isPublished() && $op === 'view') {
       $access_result = AccessResult::allowedIfHasPermission($account, 'view any unpublished content');
       $access_result = $access_result->andIf(AccessResult::allowedIf($node->getOwnerId() == $account->id() || $node->getRevisionUserId() == $account->id()));
 
       return $access_result->addCacheableDependency($node);
     }
-    return AccessResult::neutral()->addCacheableDependency($node);
   }
-}
-
-/**
- * Implements hook_entity_view_alter().
- */
-function tide_authenticated_content_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
-  // Only display preview links for Nodes.
-  if ($entity->getEntityTypeId() !== 'node') {
-    return;
-  }
-
-  /** @var \Drupal\node\NodeInterface $entity */
-  if (!empty($entity->in_preview)) {
-    return;
-  }
-
-  // Only display on Node view and Revision view.
-  $valid_routes = [
-    'entity.node.revision',
-    'entity.node.latest_version',
-    'entity.node.canonical',
-  ];
-  $route_name = \Drupal::routeMatch()->getRouteName();
-  if (!in_array($route_name, $valid_routes)) {
-    return;
-  }
-
-  // Load the node from URL.
-  /** @var \Drupal\node\NodeInterface $node */
-  $node = \Drupal::routeMatch()->getParameter('node');
-  if ($route_name == 'entity.node.revision') {
-    $node = Node::load($node);
-  }
-  // Only display on the node being viewed.
-  if ($node->id() != $entity->id()) {
-    return;
-  }
-
-  // Only display on unpublished Nodes.
-  if (($entity->isDefaultRevision())) {
-    /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_info */
-    $moderation_info = \Drupal::service('content_moderation.moderation_information');
-    if ($moderation_info->isModeratedEntity($entity)) {
-      $moderation_state = $entity->get('moderation_state')->value;
-      if ($moderation_state) {
-        $workflow = $moderation_info->getWorkflowForEntity($entity);
-        if ($workflow->getTypePlugin()->getState($moderation_state)->isPublishedState()) {
-          return;
-        }
-      }
-    }
-  }
-
-  /** @var \Drupal\node\NodeInterface $entity */
-  $revision_id = $entity->getLoadedRevisionId();
-  $is_latest_revision = $entity->isLatestRevision();
-  $content_type = $entity->bundle();
-  $preview_urls = [];
-
-  /** @var \Drupal\tide_site\TideSiteHelper $site_helper */
-  $site_helper = \Drupal::service('tide_site.helper');
-  // Generate the preview URLs on all sites.
-  $sites = $site_helper->getEntitySites($entity, TRUE);
-  if (!empty($sites['ids'])) {
-    foreach ($sites['ids'] as $site_id) {
-      $site = $site_helper->getSiteById($site_id);
-      if ($site) {
-        $url_options = [
-          'attributes' => ['target' => '_blank'],
-        ];
-
-        $section = NULL;
-        if (!empty($sites['sections'][$site_id])) {
-          $section = $site_helper->getSiteById($sites['sections'][$site_id]);
-          if ($section) {
-            $url_options['query']['section'] = $sites['sections'][$site_id];
-          }
-        }
-
-        $site_url = $site_helper->getSiteBaseUrl($site);
-        $url = !empty($site_url) ? ($site_url . '/preview/' . $content_type . '/' . $entity->uuid() . '/' . ($is_latest_revision ? 'latest' : $revision_id)) : '';
-        $preview_urls[$site_id] = [
-          'name' => !empty($site->getName()) ? $site->getName() : '',
-          'url' => (!empty($url) && !empty($url_options)) ? Url::fromUri($url, $url_options) : '',
-        ];
-
-        if ($section && $section->id() != $site_id) {
-          $preview_urls[$site_id]['name'] .= ' - ' . $section->getName();
-        }
-      }
-    }
-  }
-
-  // Prepend the preview URL of the primary site to the Preview Links.
-  $primary_site = $site_helper->getEntityPrimarySite($entity);
-  if ($primary_site) {
-    $url_options = [
-      'attributes' => ['target' => '_blank'],
-    ];
-
-    $primary_site_section = NULL;
-    if (!empty($sites['sections'][$primary_site->id()])) {
-      $primary_site_section = $site_helper->getSiteById($sites['sections'][$primary_site->id()]);
-      if ($primary_site_section) {
-        $url_options['query']['section'] = $sites['sections'][$primary_site->id()];
-      }
-    }
-
-    $primary_site_url = $site_helper->getSiteBaseUrl($primary_site);
-    $url = !empty($primary_site_url) ? ($primary_site_url . '/preview/' . $content_type . '/' . $entity->uuid() . '/' . ($is_latest_revision ? 'latest' : $revision_id)) : '';
-    $primary_preview_url = [
-      'name' => !empty($primary_site->getName()) ? $primary_site->getName() : '',
-      'url' => (!empty($url) && !empty($url_options)) ? Url::fromUri($url, $url_options) : '',
-    ];
-
-    if ($primary_site_section && $primary_site_section->id() != $primary_site->id()) {
-      $primary_preview_url['name'] .= ' - ' . $primary_site_section->getName();
-    }
-
-    unset($preview_urls[$primary_site->id()]);
-    array_unshift($preview_urls, $primary_preview_url);
-  }
-
-  // Add the Preview Links to node view.
-  if (count($preview_urls)) {
-    $build['preview_links'] = [
-      '#theme' => 'item_list',
-      '#list_type' => 'ul',
-      '#title' => t('Click the links below to preview this revision on frontend sites (Caching may take up to 5 minutes)'),
-      '#items' => [],
-      '#wrapper_attributes' => ['class' => 'node-revision-preview-links'],
-      '#attached' => [
-        'library' => ['tide_authenticated_content/preview-links'],
-      ],
-    ];
-    foreach ($preview_urls as $url_data) {
-      if (!empty($url_data['url'])) {
-        $build['preview_links']['#items'][] = [
-          '#markup' => $url_data['name'] . ': ' . Link::fromTextAndUrl($url_data['url']->toString(), $url_data['url'])->toString(),
-        ];
-      }
-    }
-  }
+  return AccessResult::neutral()->addCacheableDependency($node);
 }
