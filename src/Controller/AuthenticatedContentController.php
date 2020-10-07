@@ -219,7 +219,7 @@ class AuthenticatedContentController extends ControllerBase {
     $violationHints = $this->validateUser($u);
     if (!empty($violationHints)) {
       return new JsonResponse([
-        'message' => $this->t('Invalid fields:') . ' ' . implode('<br>', $violationHints),
+        'message' => $this->t('An error occurred and we’re unable to create your account. If you already have an account, please use the reset password feature to update your password.'),
       ],
         400);
     }
