@@ -5,6 +5,8 @@
  * Tide Authenticated Content module install file.
  */
 
+use Drupal\paragraphs\Entity\ParagraphsType;
+
 /**
  * Implements hook_install().
  */
@@ -49,4 +51,27 @@ function tide_authenticated_content_update_8003() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
   $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
   _tide_import_single_config('tide_authenticated_content.module', $config_location, TRUE);
+}
+
+/**
+ * Change description and icon of user_authentication_block paragraph.
+ */
+function tide_authenticated_content_update_8004() {
+  module_load_include('inc', 'tide_core', 'includes/helpers');
+  $icon_dir = drupal_get_path('module', 'tide_core') . DIRECTORY_SEPARATOR . 'icons';
+
+  $paragraphs = [
+    'user_authentication_block' => 'Add a login to protect content from being accessed, unless users provide a username and password.',
+  ];
+  foreach ($paragraphs as $paragraph_type_id => $description) {
+    /** @var \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type */
+    $paragraph_type = ParagraphsType::load($paragraph_type_id);
+    if ($paragraph_type) {
+      $paragraph_type->set('description', $description);
+      $paragraph_type->save();
+
+      $icon_filename = $icon_dir . DIRECTORY_SEPARATOR . $paragraph_type_id . '.svg';
+      _tide_set_paragraph_type_icon($paragraph_type, $icon_filename);
+    }
+  }
 }

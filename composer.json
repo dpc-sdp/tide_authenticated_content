@@ -28,8 +28,10 @@
             },
             "drupal/jwt": {
                 "Adding configuration for the JWT timeout - https://www.drupal.org/project/jwt/issues/2782571": "https://www.drupal.org/files/issues/2019-02-14/jwt-make_expiration_time_configurable-2782571-5.patch"
+            },
+            "dpc-sdp/tide_core": {
+                "Moved Topic and Tags field to node form sidebar - https://github.com/dpc-sdp/tide_core/pull/213": "https://github.com/dpc-sdp/tide_core/pull/213.diff"
             }
-
         }
     }
 }

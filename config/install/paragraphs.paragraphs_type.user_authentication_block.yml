@@ -1,8 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
 id: user_authentication_block
-label: 'User Authentication Block'
-icon_uuid: null
-description: ''
+label: 'User authentication block'
+icon_uuid: 0db45f7d-9118-456e-a102-7ae580b1d381
+icon_default: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjgiIGhlaWdodD0iNzciIHZpZXdCb3g9IjAgMCA2OCA3NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY3LjM3MTkiIGhlaWdodD0iNzYuOTA1NyIgZmlsbD0id2hpdGUiLz4KPGxpbmUgeDE9IjE1IiB5MT0iMjQuNSIgeDI9IjQ4IiB5Mj0iMjQuNSIgc3Ryb2tlPSIjRTBFMEUwIiBzdHJva2Utd2lkdGg9IjMiLz4KPGxpbmUgeDE9IjI3IiB5MT0iNDciIHgyPSIzOCIgeTI9IjQ3IiBzdHJva2U9IiNFMEUwRTAiIHN0cm9rZS13aWR0aD0iOCIvPgo8L3N2Zz4K'
+description: 'Add a login to protect content from being accessed, unless users provide a username and password.'
 behavior_plugins: {  }
