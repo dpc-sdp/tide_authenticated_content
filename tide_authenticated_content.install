@@ -55,7 +55,10 @@ function tide_authenticated_content_update_8002() {
  */
 function tide_authenticated_content_update_8003() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
+  $config_location = [
+    drupal_get_path('module',
+    'tide_authenticated_content') . '/config/install',
+  ];
   _tide_import_single_config('tide_authenticated_content.module', $config_location, TRUE);
 }
 
