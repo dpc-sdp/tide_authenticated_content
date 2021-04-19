@@ -82,7 +82,7 @@ function tide_authenticated_content_uninstall() {
       $role->save();
     }
   }
-  // Remove the taxonomy and fields that tide_authenticated_content has installed.
+  // Remove taxonomy and fields that tide_authenticated_content has installed.
   Vocabulary::load('authenticated_content')->delete();
 
   // Clean up paragraphs.
