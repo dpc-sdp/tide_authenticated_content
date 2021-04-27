@@ -6,8 +6,6 @@
  */
 
 use Drupal\user\Entity\Role;
-use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
@@ -82,9 +80,6 @@ function tide_authenticated_content_uninstall() {
       $role->save();
     }
   }
-  // Remove taxonomy and fields that tide_authenticated_content has installed.
-  Vocabulary::load('authenticated_content')->delete();
-
   // Clean up paragraphs.
   $paragraph_query = \Drupal::entityTypeManager()
     ->getStorage('paragraph')
@@ -99,11 +94,6 @@ function tide_authenticated_content_uninstall() {
   \Drupal::entityTypeManager()
     ->getStorage('paragraphs_type')
     ->delete([$paragraph_type_entity]);
-  // Clean up nodes.
-  FieldConfig::loadByName('node', 'landing_page', 'field_authenticated_content')
-    ->delete();
-  FieldStorageConfig::loadByName('node', 'field_authenticated_content')
-    ->delete();
   $node_types = NodeType::loadMultiple();
   if ($node_types) {
     foreach ($node_types as $node_type => $details) {
@@ -114,8 +104,6 @@ function tide_authenticated_content_uninstall() {
           ->delete();
       }
     }
-    FieldStorageConfig::loadByName('node', 'field_authenticated_content')
-      ->delete();
   }
   // Delete tide_authenticated_content related rows.
   \Drupal::database()
