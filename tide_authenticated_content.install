@@ -61,7 +61,7 @@ function tide_authenticated_content_update_8004() {
   $icon_dir = drupal_get_path('module', 'tide_authenticated_content') . DIRECTORY_SEPARATOR . 'icons';
 
   $paragraphs = [
-    'user_authentication_block' => 'Add a login to protect content from being accessed, unless users provide a username and password.',
+    'user_authentication_block' => 'Add a username and password login to protected content.',
   ];
   foreach ($paragraphs as $paragraph_type_id => $description) {
     /** @var \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type */
