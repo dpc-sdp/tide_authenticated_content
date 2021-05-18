@@ -11,7 +11,7 @@
         "dpc-sdp/tide_site": "^2.0.1",
         "drupal/jsonapi_extras": "^3.8",
         "drupal/jwt": "1.0-beta1",
-        "drupal/permissions_by_term": "v2.12"
+        "drupal/permissions_by_term": "^2.33"
     },
     "repositories": {
         "drupal": {
