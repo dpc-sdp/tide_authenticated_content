@@ -4,7 +4,7 @@
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "require": {
-        "dpc-sdp/tide_core": "^2.0.8",
+        "dpc-sdp/tide_core": "^2.0.10",
         "dpc-sdp/tide_event": "^1.3.1",
         "dpc-sdp/tide_landing_page": "^2.0.0",
         "dpc-sdp/tide_media": "^1.5.1",
@@ -28,9 +28,6 @@
             },
             "drupal/jwt": {
                 "Adding configuration for the JWT timeout - https://www.drupal.org/project/jwt/issues/2782571": "https://www.drupal.org/files/issues/2019-02-14/jwt-make_expiration_time_configurable-2782571-5.patch"
-            },
-            "dpc-sdp/tide_core": {
-                "Moved Topic and Tags field to node form sidebar - https://github.com/dpc-sdp/tide_core/pull/213": "https://github.com/dpc-sdp/tide_core/pull/213.diff"
             }
         }
     }
