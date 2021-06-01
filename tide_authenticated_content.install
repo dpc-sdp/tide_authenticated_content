@@ -5,6 +5,12 @@
  * Tide Authenticated Content module install file.
  */
 
+use Drupal\field\Entity\FieldConfig;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\node\Entity\NodeType;
+use Drupal\user\Entity\Role;
+
 /**
  * Implements hook_install().
  */
@@ -49,4 +55,79 @@ function tide_authenticated_content_update_8003() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
   $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
   _tide_import_single_config('tide_authenticated_content.module', $config_location, TRUE);
+}
+
+/**
+ * Change description and icon of user_authentication_block paragraph.
+ */
+function tide_authenticated_content_update_8004() {
+  module_load_include('inc', 'tide_core', 'includes/helpers');
+  $icon_dir = drupal_get_path('module', 'tide_authenticated_content') . DIRECTORY_SEPARATOR . 'icons';
+
+  $paragraphs = [
+    'user_authentication_block' => 'Add a username and password login to protected content.',
+  ];
+  foreach ($paragraphs as $paragraph_type_id => $description) {
+    /** @var \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type */
+    $paragraph_type = ParagraphsType::load($paragraph_type_id);
+    if ($paragraph_type) {
+      $paragraph_type->set('description', $description);
+      $paragraph_type->save();
+
+      $icon_filename = $icon_dir . DIRECTORY_SEPARATOR . $paragraph_type_id . '.svg';
+      _tide_set_paragraph_type_icon($paragraph_type, $icon_filename);
+    }
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function tide_authenticated_content_uninstall() {
+  // Remove permissions on tide_authenticated_content to Approver and Editor.
+  $roles = ['approver', 'editor'];
+  $permissions = [
+    'create terms in authenticated_content',
+    'create terms in authenticated_content',
+  ];
+
+  foreach ($roles as $role_name) {
+    $role = Role::load($role_name);
+    if ($role) {
+      foreach ($permissions as $permission) {
+        $role->revokePermission($permission);
+      }
+      $role->save();
+    }
+  }
+  // Clean up paragraphs.
+  $paragraph_query = \Drupal::entityTypeManager()
+    ->getStorage('paragraph')
+    ->getQuery();
+  $results = $paragraph_query->condition('type', 'user_authentication_block')
+    ->execute();
+  if ($results) {
+    $paragraphs = Paragraph::loadMultiple($results);
+    \Drupal::entityTypeManager()->getStorage('paragraph')->delete($paragraphs);
+  }
+  $paragraph_type_entity = ParagraphsType::load('user_authentication_block');
+  \Drupal::entityTypeManager()
+    ->getStorage('paragraphs_type')
+    ->delete([$paragraph_type_entity]);
+  $node_types = NodeType::loadMultiple();
+  if ($node_types) {
+    foreach ($node_types as $node_type => $details) {
+      $node_fields = \Drupal::service('entity_field.manager')
+        ->getFieldDefinitions('node', $node_type);
+      if (isset($node_fields['field_authenticated_content'])) {
+        FieldConfig::loadByName('node', $node_type, 'field_authenticated_content')
+          ->delete();
+      }
+    }
+  }
+  // Delete tide_authenticated_content related rows.
+  \Drupal::database()
+    ->delete('node_access')
+    ->condition('realm', 'tide_authenticated_content')
+    ->execute();
 }
