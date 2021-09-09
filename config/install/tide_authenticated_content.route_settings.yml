@@ -1,0 +1,7 @@
+route_settings:
+  'login': 1
+  'logout': 1
+  'register': 1
+  'update': 1
+  'request_reset': 1
+  'reset': 1

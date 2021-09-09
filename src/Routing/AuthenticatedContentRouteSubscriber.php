@@ -53,6 +53,23 @@ class AuthenticatedContentRouteSubscriber extends RouteSubscriberBase {
         $route->setRequirement('_custom_access', 'tide_authenticated_content.access_jsonapi_checker::access');
       }
     }
+    $route_config = \Drupal::config('tide_authenticated_content.route_settings');
+    $route_settings = $route_config->get("route_settings");
+    $route_list = [
+      'login' => 'tide_authenticated_content.user.login',
+      'logout' => 'tide_authenticated_content.user.logout',
+      'register' => 'tide_authenticated_content.user.register',
+      'update' => 'tide_authenticated_content.user.update',
+      'request_reset' => 'tide_authenticated_content.user.request_reset',
+      'reset' => 'tide_authenticated_content.user.reset',
+    ];
+    foreach ($route_list as $key => $route_name) {
+      if ($route = $collection->get($route_name)) {
+        if (!$route_settings[$key]) {
+          $route->setRequirement('_access', 'FALSE');
+        }
+      }
+    }
   }
 
 }

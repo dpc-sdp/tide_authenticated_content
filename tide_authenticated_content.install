@@ -72,9 +72,9 @@ function tide_authenticated_content_uninstall() {
     \Drupal::entityTypeManager()->getStorage('paragraph')->delete($paragraphs);
   }
   if ($paragraph_type_entity = ParagraphsType::load('user_authentication_block')) {
-    \Drupal::entityTypeManager()
-      ->getStorage('paragraphs_type')
-      ->delete([$paragraph_type_entity]);
+  \Drupal::entityTypeManager()
+    ->getStorage('paragraphs_type')
+    ->delete([$paragraph_type_entity]);
   }
   $node_types = NodeType::loadMultiple();
   if ($node_types) {
@@ -131,4 +131,13 @@ function tide_authenticated_content_update_8004() {
       _tide_set_paragraph_type_icon($paragraph_type, $icon_filename);
     }
   }
+}
+
+/**
+ * Update tide_authenticated_content configurations in database.
+ */
+function tide_authenticated_content_update_8005() {
+  module_load_include('inc', 'tide_core', 'includes/helpers');
+  $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
+  _tide_import_single_config('tide_authenticated_content.route_settings', $config_location, TRUE);
 }

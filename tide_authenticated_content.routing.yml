@@ -25,6 +25,7 @@ tide_authenticated_content.user.register:
   methods: [POST]
   requirements:
     _permission: 'access content'
+    _access_user_register: 'TRUE'
 
 tide_authenticated_content.user.update:
   path: '/api/v1/user/update'
