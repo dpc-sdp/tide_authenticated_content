@@ -139,5 +139,5 @@ function tide_authenticated_content_update_8004() {
 function tide_authenticated_content_update_8005() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
   $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
-  _tide_import_single_config('tide_authenticated_content.route_settings', $config_location, TRUE);
+  _tide_import_single_config('tide_authenticated_content.allowed_routes', $config_location, TRUE);
 }

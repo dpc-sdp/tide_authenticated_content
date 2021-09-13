@@ -1,4 +1,4 @@
-route_settings:
+allowed_routes:
   'login': 1
   'logout': 1
   'register': 1
