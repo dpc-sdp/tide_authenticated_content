@@ -244,13 +244,13 @@ function _tide_authenticated_content_user_role_validation($form, FormStateInterf
 function tide_authenticated_content_form_jsonapi_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   $route_config = \Drupal::config('tide_authenticated_content.route_settings');
   $route_settings = $route_config->get("route_settings");
-  $form['tide_authenticated_content'] = array(
+  $form['tide_authenticated_content'] = [
     '#type' => 'fieldset',
     '#title' => t('Tide authenticated content'),
     '#description' => t('Enable or disable the json routes.'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
-  );
+  ];
   $route_list = [
     'login' => 'Login',
     'logout' => 'Logout',
@@ -260,19 +260,19 @@ function tide_authenticated_content_form_jsonapi_settings_alter(&$form, FormStat
     'reset' => 'Reset Password',
   ];
   foreach ($route_list as $key => $route_name) {
-    $form['tide_authenticated_content'][$key] = array(
+    $form['tide_authenticated_content'][$key] = [
       '#type' => 'checkbox',
       '#title' => $route_name,
       '#default_value' => $route_settings[$key],
-    );
+    ];
   }
   $form['actions']['submit']['#submit'][] = 'tide_authenticated_content_form_jsonapi_settings_submit';
 }
 
 /**
- *  Custom form submit to store additional information.
+ * Custom form submit to store additional information.
  */
-function tide_authenticated_content_form_jsonapi_settings_submit(array $form, FormStateInterface $form_state){
+function tide_authenticated_content_form_jsonapi_settings_submit(array $form, FormStateInterface $form_state) {
   $route_config = \Drupal::getContainer()->get('config.factory')->getEditable('tide_authenticated_content.route_settings');
   $route_settings = [];
   $route_list = [
