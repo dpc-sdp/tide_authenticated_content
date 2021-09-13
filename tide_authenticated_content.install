@@ -72,9 +72,9 @@ function tide_authenticated_content_uninstall() {
     \Drupal::entityTypeManager()->getStorage('paragraph')->delete($paragraphs);
   }
   if ($paragraph_type_entity = ParagraphsType::load('user_authentication_block')) {
-  \Drupal::entityTypeManager()
-    ->getStorage('paragraphs_type')
-    ->delete([$paragraph_type_entity]);
+    \Drupal::entityTypeManager()
+      ->getStorage('paragraphs_type')
+      ->delete([$paragraph_type_entity]);
   }
   $node_types = NodeType::loadMultiple();
   if ($node_types) {
