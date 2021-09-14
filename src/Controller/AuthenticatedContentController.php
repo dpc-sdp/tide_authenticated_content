@@ -17,6 +17,7 @@ use Drupal\profile\Entity\Profile;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\user\UserInterface;
 
 /**
  * Class AuthenticatedContentController.
@@ -174,7 +175,7 @@ class AuthenticatedContentController extends ControllerBase {
 
     $config = $this->config('user.settings');
 
-    if ($config->get("register") === USER_REGISTER_ADMINISTRATORS_ONLY) {
+    if ($config->get("register") === UserInterface::REGISTER_ADMINISTRATORS_ONLY) {
       if ($this->currentUser === NULL || !$this->currentUser->hasPermission('administer users')) {
         return new JsonResponse(["message" => $this->t('Registration by administrators only')],
           403);
@@ -200,7 +201,7 @@ class AuthenticatedContentController extends ControllerBase {
       $u->setPassword($user['pass']);
     }
     $u->enforceIsNew(TRUE);
-    if ($config->get("register") === USER_REGISTER_VISITORS || $config->get("register") === USER_REGISTER_ADMINISTRATORS_ONLY) {
+    if ($config->get("register") === UserInterface::REGISTER_VISITORS || $config->get("register") === UserInterface::REGISTER_ADMINISTRATORS_ONLY) {
       $u->activate();
       $successMessage = $this->t('User account created.');
     }
