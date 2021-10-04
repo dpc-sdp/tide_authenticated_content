@@ -160,6 +160,7 @@ function tide_authenticated_content_node_access_records(NodeInterface $node) {
   if (\Drupal::moduleHandler()->moduleExists('permissions_by_term')) {
     if (!$node->isPublished()) {
       // No module implements this hook for unpublished nodes, so we do.
+      $grants = [];
       $grants[] = [
         'realm' => 'tide_authenticated_content',
         'gid' => 1,
@@ -185,6 +186,7 @@ function tide_authenticated_content_node_grants(AccountInterface $account, $op) 
       $view_unpublished_content_roles = array_keys(user_roles(TRUE, 'view any unpublished content'));
       $account_roles = $account->getRoles();
       if (!empty(array_intersect($account_roles, $view_unpublished_content_roles))) {
+        $grants = [];
         $grants['tide_authenticated_content'][] = 1;
 
         return $grants;

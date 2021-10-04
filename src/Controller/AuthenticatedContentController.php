@@ -20,7 +20,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\user\UserInterface;
 
 /**
- * Class AuthenticatedContentController.
+ * Class authenticated content controller.
  *
  * @package Drupal\tide_authenticated_content\Controller
  */
@@ -100,7 +100,7 @@ class AuthenticatedContentController extends ControllerBase {
   public function loginAction(
     Request $request
   ) {
-    // TODO: implement flood control.
+    // @todo implement flood control.
     $auth = UserAuthenticationController::create($this->container);
     try {
       $resp = $auth->login($request);
@@ -118,7 +118,7 @@ class AuthenticatedContentController extends ControllerBase {
       $body = json_decode($resp->getContent(),
         TRUE);
       $jwt = JwtAuthIssuerController::create($this->container);
-      // @var \Symfony\Component\HttpFoundation\Response $tokenResp
+      /** @var \Symfony\Component\HttpFoundation\Response $tokenResp */
       $tokenResp = $jwt->tokenResponse();
       if ($tokenResp->getStatusCode() == 200) {
         $token = json_decode($tokenResp->getContent(),
@@ -382,7 +382,7 @@ class AuthenticatedContentController extends ControllerBase {
     $message = $this->t('If your account is registered in our system a forgot password email has been sent to your email address.');
     $data = json_decode($request->getContent(),
       TRUE);
-    // @var \Drupal\user\Entity\User[] $users
+    /** @var \Drupal\user\Entity\User[] $users */
     $users = [];
     if (isset($data['name'])) {
       $name = $data['name'];
@@ -440,7 +440,7 @@ class AuthenticatedContentController extends ControllerBase {
         }
         $rehash = user_pass_rehash($user,
           $time);
-        // TODO: Replace hard-coded link expiry.
+        // @todo Replace hard-coded link expiry.
         // Expire in 24 hours.
         if (REQUEST_TIME - $time > 3600 * 24) {
           return new JsonResponse(['message' => $this->t('Link Expired.')],
