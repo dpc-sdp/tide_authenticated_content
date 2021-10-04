@@ -263,7 +263,7 @@ function tide_authenticated_content_form_jsonapi_settings_alter(&$form, FormStat
     $form['tide_authenticated_content'][$key] = [
       '#type' => 'checkbox',
       '#title' => $route_name,
-      '#default_value' => $allowed_routes[$key],
+      '#default_value' => $allowed_routes[$key] ?? FALSE,
     ];
   }
   $form['actions']['submit']['#submit'][] = 'tide_authenticated_content_form_jsonapi_settings_submit';
@@ -275,6 +275,7 @@ function tide_authenticated_content_form_jsonapi_settings_alter(&$form, FormStat
 function tide_authenticated_content_form_jsonapi_settings_submit(array $form, FormStateInterface $form_state) {
   $route_config = \Drupal::getContainer()->get('config.factory')->getEditable('tide_authenticated_content.allowed_routes');
   $allowed_routes = [];
+  $unset_values = [];
   $route_list = [
     'login',
     'logout',
@@ -285,6 +286,10 @@ function tide_authenticated_content_form_jsonapi_settings_submit(array $form, Fo
   ];
   foreach ($route_list as $route_name) {
     $allowed_routes[$route_name] = $form_state->getValue($route_name);
+    $unset_values[] = $route_name;
   }
   $route_config->set('allowed_routes', $allowed_routes)->save();
+  if (!empty($unset_values)) {
+    $form_state->unsetValue($unset_values);
+  }
 }

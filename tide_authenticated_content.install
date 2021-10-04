@@ -134,10 +134,10 @@ function tide_authenticated_content_update_8004() {
 }
 
 /**
- * Update tide_authenticated_content configurations in database.
+ * Import yaml config of `tide_authenticated_content.allowed_routes`.
  */
 function tide_authenticated_content_update_8005() {
-  module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
-  _tide_import_single_config('tide_authenticated_content.allowed_routes', $config_location, TRUE);
+  /** @var \Drupal\Core\Config\ConfigInstallerInterface $configInstaller */
+  $configInstaller = \Drupal::service('config.installer');
+  $configInstaller->installDefaultConfig('module', 'tide_authenticated_content');
 }
