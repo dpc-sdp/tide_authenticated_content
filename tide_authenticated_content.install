@@ -137,7 +137,16 @@ function tide_authenticated_content_update_8004() {
  * Import yaml config of `tide_authenticated_content.allowed_routes`.
  */
 function tide_authenticated_content_update_8005() {
-  /** @var \Drupal\Core\Config\ConfigInstallerInterface $configInstaller */
-  $configInstaller = \Drupal::service('config.installer');
-  $configInstaller->installDefaultConfig('module', 'tide_authenticated_content');
+  $data = [
+    'allowed_routes' => [
+      'login' => 1,
+      'logout' => 1,
+      'register' => 1,
+      'update' => 1,
+      'request_reset' => 1,
+      'reset' => 1,
+    ],
+  ];
+  $config = \Drupal::configFactory()->getEditable('tide_authenticated_content.allowed_routes');
+  $config->setData($data)->save();
 }
