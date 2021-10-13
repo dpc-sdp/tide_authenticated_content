@@ -53,6 +53,23 @@ class AuthenticatedContentRouteSubscriber extends RouteSubscriberBase {
         $route->setRequirement('_custom_access', 'tide_authenticated_content.access_jsonapi_checker::access');
       }
     }
+    $route_config = $this->configFactory->get('tide_authenticated_content.allowed_routes');
+    $allowed_routes = $route_config->get('allowed_routes');
+    $route_list = [
+      'login' => 'tide_authenticated_content.user.login',
+      'logout' => 'tide_authenticated_content.user.logout',
+      'register' => 'tide_authenticated_content.user.register',
+      'update' => 'tide_authenticated_content.user.update',
+      'request_reset' => 'tide_authenticated_content.user.request_reset',
+      'reset' => 'tide_authenticated_content.user.reset',
+    ];
+    foreach ($route_list as $key => $route_name) {
+      if ($route = $collection->get($route_name)) {
+        if (empty($allowed_routes[$key])) {
+          $route->setRequirement('_access', 'FALSE');
+        }
+      }
+    }
   }
 
 }

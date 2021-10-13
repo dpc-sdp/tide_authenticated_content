@@ -56,4 +56,3 @@ Feature: Authenticated Content
     Then I should get a "401" HTTP response
     And I should see an "input#username" element
     And save screenshot
-
