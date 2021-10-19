@@ -31,7 +31,7 @@ class AuthProvider extends JwtAuth {
    * @return string|bool
    *   Raw JWT String if on request, false if not.
    */
-  protected function getJwtFromRequest(Request $request) {
+  public static function getJwtFromRequest(Request $request) {
     $auth_header = $request->headers->get('X-Authorization');
     $matches = [];
     if (!preg_match('/^Bearer (.*)/', $auth_header, $matches)) {
