@@ -2,7 +2,7 @@ name: Tide Authenticated Content
 type: module
 description: 'restrict access to specific content from that the general public'
 package: Tide
-core: 8.x
+core_version_requirement: ^8.9 || ^9
 dependencies:
   - dpc-sdp:tide_core
   - dpc-sdp:tide_event
