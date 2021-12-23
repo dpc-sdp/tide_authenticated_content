@@ -54,7 +54,8 @@ class AuthProvider extends JwtAuth {
     // Decode JWT and validate signature.
     try {
       $jwt = $this->transcoder->decode($raw_jwt);
-    } catch (JwtDecodeException $e) {
+    }
+    catch (JwtDecodeException $e) {
       return NULL;
     }
 
