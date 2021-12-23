@@ -80,7 +80,7 @@ class AuthenticatedContentController extends ControllerBase {
     ContainerInterface $container
   ) {
     return new static($container,
-      $container->get('entity.manager')
+      $container->get('entity_type.manager')
         ->getStorage('user'),
       $container->get('module_handler'));
   }
