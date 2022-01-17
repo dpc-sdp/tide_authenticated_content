@@ -5,7 +5,6 @@
  * Tide Authenticated Content module functionality.
  */
 
-use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\tide_site\TideSiteHelper;
 use Drupal\user\Entity\User;
@@ -150,66 +149,6 @@ function tide_authenticated_content_profile_access(
   }
 
   return AccessResult::neutral();
-}
-
-/**
- * Implements hook_node_access_records().
- */
-function tide_authenticated_content_node_access_records(NodeInterface $node) {
-  // Only run if the module permission by terms is enabled.
-  if (\Drupal::moduleHandler()->moduleExists('permissions_by_term')) {
-    if (!$node->isPublished()) {
-      // No module implements this hook for unpublished nodes, so we do.
-      $grants = [];
-      $grants[] = [
-        'realm' => 'tide_authenticated_content',
-        'gid' => 1,
-        'grant_view' => 1,
-        'grant_update' => 0,
-        'grant_delete' => 0,
-        'nid' => $node->id(),
-      ];
-
-      return $grants;
-    }
-  }
-  return [];
-}
-
-/**
- * Implements hook_node_grants().
- */
-function tide_authenticated_content_node_grants(AccountInterface $account, $op) {
-  // Only run if the module permission by terms is enabled.
-  if (\Drupal::moduleHandler()->moduleExists('permissions_by_term')) {
-    if ($op === 'view') {
-      $view_unpublished_content_roles = array_keys(user_roles(TRUE, 'view any unpublished content'));
-      $account_roles = $account->getRoles();
-      if (!empty(array_intersect($account_roles, $view_unpublished_content_roles))) {
-        $grants = [];
-        $grants['tide_authenticated_content'][] = 1;
-
-        return $grants;
-      }
-    }
-  }
-  return [];
-}
-
-/**
- * Implements hook_node_access().
- */
-function tide_authenticated_content_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  // Only run if the module permission by terms is enabled.
-  if (\Drupal::moduleHandler()->moduleExists('permissions_by_term')) {
-    if (!$node->isPublished() && $op === 'view') {
-      $access_result = AccessResult::allowedIfHasPermission($account, 'view any unpublished content');
-      $access_result = $access_result->andIf(AccessResult::allowedIf($node->getOwnerId() == $account->id() || $node->getRevisionUserId() == $account->id()));
-
-      return $access_result->addCacheableDependency($node);
-    }
-  }
-  return AccessResult::neutral()->addCacheableDependency($node);
 }
 
 /**
