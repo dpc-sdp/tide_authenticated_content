@@ -23,6 +23,9 @@
     "prefer-stable": true,
     "extra": {
         "patches": {
+            "drupal/jwt": {
+                "Adding configuration for the JWT timeout - https://www.drupal.org/project/jwt/issues/2782571#comment-14484194": "https://www.drupal.org/files/issues/2022-04-17/2782571-37.patch"
+            },
             "drupal/permissions_by_term": {
                 "Node Access Rebuilt unnecessarily if no change to user terms - https://www.drupal.org/project/permissions_by_term/issues/3170389": "https://www.drupal.org/files/issues/2021-10-01/Issue-3170389-4-Node-Access-Rebuilt-unnecessarily.patch"
             }
