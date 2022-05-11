@@ -4,7 +4,6 @@ namespace Drupal\tide_authenticated_content\Plugin\search_api\processor;
 
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\node\NodeInterface;
-use Entity;
 
 /**
  * Excludes authenticated content from node indexes.
@@ -36,4 +35,5 @@ class AuthenticatedStatus extends ProcessorPluginBase {
       }
     }
   }
+
 }
