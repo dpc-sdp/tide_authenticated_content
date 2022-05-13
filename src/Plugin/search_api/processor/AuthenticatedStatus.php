@@ -4,7 +4,6 @@ namespace Drupal\tide_authenticated_content\Plugin\search_api\processor;
 
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\node\NodeInterface;
-
 /**
  * Excludes authenticated content from node indexes.
  *
@@ -28,7 +27,7 @@ class AuthenticatedStatus extends ProcessorPluginBase {
       if ($entity instanceof NodeInterface && $entity->bundle() === 'landing_page') {
         if (
           $entity->hasField('field_authenticated_content')
-          && empty($entity->field_authenticated_content->getValue())
+          && !empty($entity->field_authenticated_content->getValue())
         ) {
           unset($items[$item_id]);
         }
