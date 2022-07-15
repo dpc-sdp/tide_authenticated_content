@@ -30,6 +30,8 @@ class AuthenticatedStatus extends ProcessorPluginBase {
           $entity->hasField('field_authenticated_content')
           && !empty($entity->field_authenticated_content->getValue())
         ) {
+          dump($items);
+          die;
           unset($items[$item_id]);
         }
       }
