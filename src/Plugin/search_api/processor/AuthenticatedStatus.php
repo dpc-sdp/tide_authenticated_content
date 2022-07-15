@@ -31,7 +31,6 @@ class AuthenticatedStatus extends ProcessorPluginBase {
           && !empty($entity->field_authenticated_content->getValue())
         ) {
           dump($items);
-          die;
           unset($items[$item_id]);
         }
       }
