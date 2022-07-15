@@ -23,6 +23,7 @@ class AuthenticatedStatus extends ProcessorPluginBase {
    * {@inheritdoc}
    */
   public function alterIndexedItems(array &$items) {
+    dump('hola');
     foreach ($items as $item_id => $item) {
       $entity = $item->getOriginalObject()->getValue();
       if ($entity instanceof NodeInterface && $entity->bundle() === 'landing_page') {
@@ -30,7 +31,6 @@ class AuthenticatedStatus extends ProcessorPluginBase {
           $entity->hasField('field_authenticated_content')
           && !empty($entity->field_authenticated_content->getValue())
         ) {
-          dump($item);
           unset($items[$item_id]);
         }
       }
