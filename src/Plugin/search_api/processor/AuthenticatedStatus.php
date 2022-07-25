@@ -26,13 +26,13 @@ class AuthenticatedStatus extends ProcessorPluginBase {
     foreach ($items as $item_id => $item) {
       $entity = $item->getOriginalObject()->getValue();
       if ($entity instanceof NodeInterface && $entity->bundle() === 'landing_page') {
-        if (
+/*        if (
           $entity->hasField('field_authenticated_content')
           && !empty($entity->field_authenticated_content->getValue())
         ) {
           unset($items[$item_id]);
         }
-      }
+*/      }
     }
   }
 
