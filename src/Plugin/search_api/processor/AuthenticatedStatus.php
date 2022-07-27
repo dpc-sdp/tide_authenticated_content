@@ -2,8 +2,10 @@
 
 namespace Drupal\tide_authenticated_content\Plugin\search_api\processor;
 
+use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\node\NodeInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 
 /**
  * Excludes authenticated content from node indexes.
@@ -17,23 +19,35 @@ use Drupal\node\NodeInterface;
  *   },
  * )
  */
-class AuthenticatedStatus extends ProcessorPluginBase {
+class AuthenticatedStatus extends ProcessorPluginBase
+{
+
+  use PluginFormTrait;
+
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
+  {
+    /** @var static $processor */
+    $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+
+    return $processor;
+  }
 
   /**
    * {@inheritdoc}
    */
-  public function alterIndexedItems(array &$items) {
+  public function alterIndexedItems(array &$items)
+  {
     foreach ($items as $item_id => $item) {
-      $entity = $item->getOriginalObject()->getValue();
-      if ($entity instanceof NodeInterface && $entity->bundle() === 'landing_page') {
-        if (
-          $entity->hasField('field_authenticated_content')
-          && !empty($entity->field_authenticated_content->getValue())
-        ) {
+      $object = $item->getOriginalObject()->getValue();
+      $bundle = $object->bundle();
+
+      if ($bundle === 'landing_page' && $object->hasField('field_authenticated_content')) {
+        $value = $object->get('field_authenticated_content')->getValue();
+        if ($value[0]['target_id']) {
           unset($items[$item_id]);
+          continue;
         }
       }
     }
   }
-
 }
