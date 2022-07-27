@@ -22,6 +22,9 @@ class AuthenticatedStatus extends ProcessorPluginBase {
 
   use PluginFormTrait;
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     /** @var static $processor */
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
@@ -33,6 +36,8 @@ class AuthenticatedStatus extends ProcessorPluginBase {
    * {@inheritdoc}
    */
   public function alterIndexedItems(array &$items) {
+
+    /** @var \Drupal\search_api\Item\ItemInterface $item */
     foreach ($items as $item_id => $item) {
       $object = $item->getOriginalObject()->getValue();
       $bundle = $object->bundle();
@@ -46,4 +51,5 @@ class AuthenticatedStatus extends ProcessorPluginBase {
       }
     }
   }
+
 }
