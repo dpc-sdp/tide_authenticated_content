@@ -6,7 +6,6 @@ use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 /**
  * Excludes authenticated content from node indexes.
  *
@@ -19,13 +18,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   },
  * )
  */
-class AuthenticatedStatus extends ProcessorPluginBase
-{
+class AuthenticatedStatus extends ProcessorPluginBase {
 
   use PluginFormTrait;
 
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
-  {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     /** @var static $processor */
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
 
@@ -35,8 +32,7 @@ class AuthenticatedStatus extends ProcessorPluginBase
   /**
    * {@inheritdoc}
    */
-  public function alterIndexedItems(array &$items)
-  {
+  public function alterIndexedItems(array &$items) {
     foreach ($items as $item_id => $item) {
       $object = $item->getOriginalObject()->getValue();
       $bundle = $object->bundle();
