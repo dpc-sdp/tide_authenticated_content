@@ -46,7 +46,6 @@ class AuthenticatedStatus extends ProcessorPluginBase {
         $value = $object->get('field_authenticated_content')->getValue();
         if ($value[0]['target_id']) {
           unset($items[$item_id]);
-          continue;
         }
       }
     }
