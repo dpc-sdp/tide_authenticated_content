@@ -44,7 +44,7 @@ class AuthenticatedStatus extends ProcessorPluginBase {
 
       if ($bundle === 'landing_page' && $object->hasField('field_authenticated_content')) {
         $value = $object->get('field_authenticated_content')->getValue();
-        if ($value[0]['target_id']) {
+if (!$object->field_authenticated_content->isEmpty()) {
           unset($items[$item_id]);
         }
       }
