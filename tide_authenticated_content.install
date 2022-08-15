@@ -139,7 +139,6 @@ function tide_authenticated_content_update_8004() {
 function tide_authenticated_content_update_8005() {
   $config_factory = \Drupal::configFactory();
 
-  $changes = FALSE;
   foreach ($config_factory->listAll('search_api.index.') as $index_id) {
     $index = $config_factory->getEditable($index_id);
     $processors = $index->get('processor_settings');
@@ -147,13 +146,6 @@ function tide_authenticated_content_update_8005() {
       $processors['authenticated_status'] = [];
       $index->set('processor_settings', $processors);
       $index->save(TRUE);
-      $changes = TRUE;
     }
   }
-
-  if ($changes) {
-    return t('Setting Exclude authenticated status processor by default.');
-  }
-  return NULL;
-
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\tide_authenticated_content\Plugin\search_api\processor;
 
-use Drupal\search_api\Plugin\PluginFormTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -19,8 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class AuthenticatedStatus extends ProcessorPluginBase {
-
-  use PluginFormTrait;
 
   /**
    * {@inheritdoc}
@@ -43,7 +40,6 @@ class AuthenticatedStatus extends ProcessorPluginBase {
       $bundle = $object->bundle();
 
       if ($bundle === 'landing_page' && $object->hasField('field_authenticated_content')) {
-        $value = $object->get('field_authenticated_content')->getValue();
         if (!$object->field_authenticated_content->isEmpty()) {
           unset($items[$item_id]);
         }
