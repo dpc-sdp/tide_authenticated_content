@@ -6,7 +6,7 @@
     "require": {
         "dpc-sdp/tide_core": "dev-feature/SRM-512_update_drupal_to_9.4",
         "dpc-sdp/tide_event": "dev-feature/SRM-512_update_drupal_to_9.4",
-        "dpc-sdp/tide_landing_page": "^3.0.0",
+        "dpc-sdp/tide_landing_page": "dev-feature/SRM-512_update_drupal_to_9.4",
         "dpc-sdp/tide_media": "^3.0.0",
         "dpc-sdp/tide_site": "^3.0.0",
         "drupal/jsonapi_extras": "^3.8",
