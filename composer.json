@@ -7,8 +7,8 @@
         "dpc-sdp/tide_core": "dev-feature/SRM-512_update_drupal_to_9.4",
         "dpc-sdp/tide_event": "dev-feature/SRM-512_update_drupal_to_9.4",
         "dpc-sdp/tide_landing_page": "dev-feature/SRM-512_update_drupal_to_9.4",
-        "dpc-sdp/tide_media": "^3.0.0",
-        "dpc-sdp/tide_site": "^3.0.0",
+        "dpc-sdp/tide_media": "dev-feature/SRM-512_update_drupal_to_9.4",
+        "dpc-sdp/tide_site": "dev-feature/SRM-512_update_drupal_to_9.4",
         "drupal/jsonapi_extras": "^3.8",
         "drupal/jwt": "^1.0",
         "drupal/permissions_by_term": "^3.1"
