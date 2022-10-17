@@ -28,7 +28,7 @@ function tide_authenticated_content_install() {
 
     // Create taxonomy.
     module_load_include('inc', 'tide_core', 'includes/helpers');
-    $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
+    $config_location = [\Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . '/config/install'];
     _tide_import_single_config('taxonomy.vocabulary.authenticated_content', $config_location);
 
     // Create field for Landing page.
@@ -106,7 +106,7 @@ function tide_authenticated_content_update_8002() {
  */
 function tide_authenticated_content_update_8003() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [drupal_get_path('module', 'tide_authenticated_content') . '/config/install'];
+  $config_location = [\Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . '/config/install'];
   _tide_import_single_config('tide_authenticated_content.module', $config_location, TRUE);
 }
 
@@ -115,7 +115,7 @@ function tide_authenticated_content_update_8003() {
  */
 function tide_authenticated_content_update_8004() {
   module_load_include('inc', 'tide_core', 'includes/helpers');
-  $icon_dir = drupal_get_path('module', 'tide_authenticated_content') . DIRECTORY_SEPARATOR . 'icons';
+  $icon_dir = \Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . DIRECTORY_SEPARATOR . 'icons';
 
   $paragraphs = [
     'user_authentication_block' => 'Add a username and password login to protected content.',
