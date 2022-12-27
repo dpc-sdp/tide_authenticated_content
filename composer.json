@@ -1,35 +1,34 @@
 {
-    "name": "dpc-sdp/tide_authenticated_content",
-    "description": "Allows content administrators to protect pages and sections with user authentication",
-    "type": "drupal-module",
-    "license": "GPL-2.0-or-later",
-    "require": {
-        "dpc-sdp/tide_core": "^3.0.1",
-        "dpc-sdp/tide_event": "^3.0.0",
-        "dpc-sdp/tide_landing_page": "^3.0.0",
-        "dpc-sdp/tide_media": "^3.0.0",
-        "dpc-sdp/tide_site": "^3.0.0",
-        "drupal/jsonapi_extras": "^3.8",
-        "drupal/jwt": "^1.0",
-        "drupal/permissions_by_term": "^3.1"
-    },
-    "repositories": {
-        "drupal": {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        }
-    },
-    "minimum-stability": "alpha",
-    "prefer-stable": true,
-    "extra": {
-        "patches": {
-            "drupal/jwt": {
-                "Adding configuration for the JWT timeout - https://www.drupal.org/project/jwt/issues/2782571#comment-14484194": "https://www.drupal.org/files/issues/2022-04-17/2782571-37.patch"
-            },
-            "drupal/permissions_by_term": {
-                "Node Access Rebuilt unnecessarily if no change to user terms - https://www.drupal.org/project/permissions_by_term/issues/3170389": "https://www.drupal.org/files/issues/2021-10-01/Issue-3170389-4-Node-Access-Rebuilt-unnecessarily.patch"
-            }
-        }
+  "description": "Allows content administrators to protect pages and sections with user authentication",
+  "extra": {
+    "patches": {
+      "drupal/jwt": {
+        "Adding configuration for the JWT timeout - https://www.drupal.org/project/jwt/issues/2782571#comment-14484194": "https://www.drupal.org/files/issues/2022-04-17/2782571-37.patch"
+      },
+      "drupal/permissions_by_term": {
+        "Node Access Rebuilt unnecessarily if no change to user terms - https://www.drupal.org/project/permissions_by_term/issues/3170389": "https://www.drupal.org/files/issues/2021-10-01/Issue-3170389-4-Node-Access-Rebuilt-unnecessarily.patch"
+      }
     }
+  },
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "alpha",
+  "name": "dpc-sdp/tide_authenticated_content",
+  "prefer-stable": true,
+  "repositories": {
+    "drupal": {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }
+  },
+  "require": {
+    "dpc-sdp/tide_core": "dev-reference",
+    "dpc-sdp/tide_event": "dev-reference",
+    "dpc-sdp/tide_landing_page": "dev-reference",
+    "dpc-sdp/tide_media": "dev-reference",
+    "dpc-sdp/tide_site": "dev-reference",
+    "drupal/jsonapi_extras": "^3.8",
+    "drupal/jwt": "^1.0",
+    "drupal/permissions_by_term": "^3.1"
+  },
+  "type": "drupal-module"
 }
-
