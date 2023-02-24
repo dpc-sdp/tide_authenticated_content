@@ -19,7 +19,7 @@ class TideDisallowJwtAuthRequests extends DisallowJwtAuthRequests {
    */
   public function check(Request $request) {
     $auth = $request->headers->get('X-Authorization');
-    if (preg_match('/^Bearer .+/', $auth??'')) {
+    if (preg_match('/^Bearer .+/', $auth ?? '')) {
       return self::DENY;
     }
 

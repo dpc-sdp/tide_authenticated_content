@@ -21,7 +21,7 @@ class AuthProvider extends JwtAuth {
    */
   public function applies(Request $request) {
     $auth = $request->headers->get('X-Authorization');
-    return preg_match('/^Bearer .+/', $auth??'');
+    return preg_match('/^Bearer .+/', $auth ?? '');
   }
 
   /**
