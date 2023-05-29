@@ -29,6 +29,9 @@
             },
             "drupal/permissions_by_term": {
                 "Node Access Rebuilt unnecessarily if no change to user terms - https://www.drupal.org/project/permissions_by_term/issues/3170389": "https://www.drupal.org/files/issues/2021-10-01/Issue-3170389-4-Node-Access-Rebuilt-unnecessarily.patch"
+            },
+            "drupal/key": {
+                "KeyProviderInterface::getKeyValue() doesn't always return a string - https://www.drupal.org/project/key/issues/3356052#comment-15030602": "https://git.drupalcode.org/project/key/-/merge_requests/11/diffs.patch"
             }
         }
     }
