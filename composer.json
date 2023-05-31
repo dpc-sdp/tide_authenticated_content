@@ -4,9 +4,9 @@
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "require": {
-        "dpc-sdp/tide_core": "^3.0.1",
-        "dpc-sdp/tide_event": "^3.0.0",
-        "dpc-sdp/tide_landing_page": "^3.0.0",
+        "dpc-sdp/tide_core": "^3.2.8",
+        "dpc-sdp/tide_event": "^3.0.3",
+        "dpc-sdp/tide_landing_page": "^3.0.13",
         "dpc-sdp/tide_media": "^3.0.0",
         "dpc-sdp/tide_site": "^3.0.0",
         "drupal/jsonapi_extras": "^3.8",
@@ -16,7 +16,17 @@
     "repositories": {
         "drupal": {
             "type": "composer",
-            "url": "https://packages.drupal.org/8"
+            "url": "https://packages.drupal.org/8",
+            "canonical": false
+        },
+        "drupal/entity_embed": {
+            "type": "git",
+            "url": "https://git.drupalcode.org/issue/entity_embed-3272732.git"
+        },
+        "drupal/video_embed_field": {
+            "type": "vcs",
+            "no-api": true,
+            "url": "https://git.drupalcode.org/issue/video_embed_field-3311063.git"
         }
     },
     "minimum-stability": "alpha",
@@ -29,6 +39,9 @@
             },
             "drupal/permissions_by_term": {
                 "Node Access Rebuilt unnecessarily if no change to user terms - https://www.drupal.org/project/permissions_by_term/issues/3170389": "https://www.drupal.org/files/issues/2021-10-01/Issue-3170389-4-Node-Access-Rebuilt-unnecessarily.patch"
+            },
+            "drupal/key": {
+                "KeyProviderInterface::getKeyValue() doesn't always return a string - https://www.drupal.org/project/key/issues/3356052#comment-15030602": "https://git.drupalcode.org/project/key/-/merge_requests/11/diffs.patch"
             }
         }
     }
