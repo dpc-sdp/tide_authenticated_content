@@ -16,17 +16,7 @@
     "repositories": {
         "drupal": {
             "type": "composer",
-            "url": "https://packages.drupal.org/8",
-            "canonical": false
-        },
-        "drupal/entity_embed": {
-            "type": "git",
-            "url": "https://git.drupalcode.org/issue/entity_embed-3272732.git"
-        },
-        "drupal/video_embed_field": {
-            "type": "vcs",
-            "no-api": true,
-            "url": "https://git.drupalcode.org/issue/video_embed_field-3311063.git"
+            "url": "https://packages.drupal.org/8"
         }
     },
     "minimum-stability": "alpha",
