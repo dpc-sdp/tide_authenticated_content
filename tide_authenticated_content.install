@@ -5,11 +5,11 @@
  * Tide Authenticated Content module install file.
  */
 
- use Drupal\field\Entity\FieldConfig;
- use Drupal\node\Entity\NodeType;
- use Drupal\paragraphs\Entity\Paragraph;
- use Drupal\paragraphs\Entity\ParagraphsType;
- use Drupal\user\Entity\Role;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\NodeType;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_install().
