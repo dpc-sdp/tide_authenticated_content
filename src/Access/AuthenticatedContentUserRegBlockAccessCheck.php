@@ -2,9 +2,9 @@
 
 namespace Drupal\tide_authenticated_content\Access;
 
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Checks access for displaying configuration translation page.

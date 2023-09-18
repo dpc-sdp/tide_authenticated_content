@@ -6,9 +6,9 @@
  */
 
 use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
-use Drupal\node\Entity\NodeType;
 use Drupal\user\Entity\Role;
 
 /**
