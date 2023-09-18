@@ -2,22 +2,22 @@
 
 namespace Drupal\tide_authenticated_content\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\jwt_auth_issuer\Controller\JwtAuthIssuerController;
+use Drupal\profile\Entity\Profile;
 use Drupal\profile\Entity\ProfileType;
 use Drupal\user\Controller\UserAuthenticationController;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Drupal\user\UserStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Drupal\profile\Entity\Profile;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Component\Utility\Html;
-use Drupal\user\UserInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Class authenticated content controller.
