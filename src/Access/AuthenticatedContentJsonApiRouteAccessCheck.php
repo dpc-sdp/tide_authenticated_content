@@ -2,12 +2,12 @@
 
 namespace Drupal\tide_authenticated_content\Access;
 
-use Drupal\Core\Config\ConfigFactory;
-use Drupal\Core\Path\CurrentPathStack;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Routing\Access\AccessInterface;
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Path\CurrentPathStack;
+use Drupal\Core\Routing\Access\AccessInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

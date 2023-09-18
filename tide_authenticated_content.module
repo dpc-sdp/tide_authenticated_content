@@ -5,13 +5,13 @@
  * Tide Authenticated Content module functionality.
  */
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\tide_site\TideSiteHelper;
 use Drupal\user\Entity\User;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_mail_alter().
