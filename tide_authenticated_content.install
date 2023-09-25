@@ -27,7 +27,7 @@ function tide_authenticated_content_install() {
     ]);
 
     // Create taxonomy.
-    module_load_include('inc', 'tide_core', 'includes/helpers');
+    \Drupal::moduleHandler()->loadInclude('tide_core', 'inc', 'includes/helpers');
     $config_location = [\Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . '/config/install'];
     _tide_import_single_config('taxonomy.vocabulary.authenticated_content', $config_location);
 
