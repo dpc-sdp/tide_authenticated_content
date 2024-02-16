@@ -25,19 +25,6 @@ function tide_authenticated_content_install() {
       'permissions_by_term',
       'rest',
     ]);
-
-    // Create taxonomy.
-    \Drupal::moduleHandler()->loadInclude('tide_core', 'inc', 'includes/helpers');
-    $config_location = [\Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . '/config/install'];
-    _tide_import_single_config('taxonomy.vocabulary.authenticated_content', $config_location);
-
-    // Create field for Landing page.
-    _tide_import_single_config('field.storage.node.field_authenticated_content', $config_location);
-    _tide_import_single_config('field.field.node.landing_page.field_authenticated_content', $config_location);
-
-    // Allow editors and approvers access to create Authenticated Content terms.
-    user_role_grant_permissions('editor', ['create terms in authenticated_content']);
-    user_role_grant_permissions("approver", ['create terms in authenticated_content']);
   }
 }
 
@@ -92,60 +79,4 @@ function tide_authenticated_content_uninstall() {
     ->delete('node_access')
     ->condition('realm', 'tide_authenticated_content')
     ->execute();
-}
-
-/**
- * Rebuild node_access table.
- */
-function tide_authenticated_content_update_8002() {
-  node_access_rebuild();
-}
-
-/**
- * Update tide_authenticated_content configurations in database.
- */
-function tide_authenticated_content_update_8003() {
-  module_load_include('inc', 'tide_core', 'includes/helpers');
-  $config_location = [\Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . '/config/install'];
-  _tide_import_single_config('tide_authenticated_content.module', $config_location, TRUE);
-}
-
-/**
- * Change description and icon of user_authentication_block paragraph.
- */
-function tide_authenticated_content_update_8004() {
-  module_load_include('inc', 'tide_core', 'includes/helpers');
-  $icon_dir = \Drupal::service('extension.list.module')->getPath('tide_authenticated_content') . DIRECTORY_SEPARATOR . 'icons';
-
-  $paragraphs = [
-    'user_authentication_block' => 'Add a username and password login to protected content.',
-  ];
-  foreach ($paragraphs as $paragraph_type_id => $description) {
-    /** @var \Drupal\paragraphs\Entity\ParagraphsType $paragraph_type */
-    $paragraph_type = ParagraphsType::load($paragraph_type_id);
-    if ($paragraph_type) {
-      $paragraph_type->set('description', $description);
-      $paragraph_type->save();
-
-      $icon_filename = $icon_dir . DIRECTORY_SEPARATOR . $paragraph_type_id . '.svg';
-      _tide_set_paragraph_type_icon($paragraph_type, $icon_filename);
-    }
-  }
-}
-
-/**
- * Setting Exclude authenticated status processor by default.
- */
-function tide_authenticated_content_update_8005() {
-  $config_factory = \Drupal::configFactory();
-
-  foreach ($config_factory->listAll('search_api.index.') as $index_id) {
-    $index = $config_factory->getEditable($index_id);
-    $processors = $index->get('processor_settings');
-    if (!isset($processors['authenticated_status'])) {
-      $processors['authenticated_status'] = [];
-      $index->set('processor_settings', $processors);
-      $index->save(TRUE);
-    }
-  }
 }
