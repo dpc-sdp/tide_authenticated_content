@@ -51,7 +51,8 @@ function tide_authenticated_content_uninstall() {
   // Clean up paragraphs.
   $paragraph_query = \Drupal::entityTypeManager()
     ->getStorage('paragraph')
-    ->getQuery();
+    ->getQuery()
+    ->accessCheck(FALSE);
   $results = $paragraph_query->condition('type', 'user_authentication_block')
     ->execute();
   if ($results) {
