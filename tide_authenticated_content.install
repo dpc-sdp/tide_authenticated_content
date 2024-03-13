@@ -53,6 +53,7 @@ function tide_authenticated_content_uninstall() {
     ->getStorage('paragraph')
     ->getQuery();
   $results = $paragraph_query->condition('type', 'user_authentication_block')
+    ->accessCheck(FALSE)
     ->execute();
   if ($results) {
     $paragraphs = Paragraph::loadMultiple($results);
